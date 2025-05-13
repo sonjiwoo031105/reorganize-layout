@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+/* 여기에 주어진 요구 사항을 충족 시키기 위한 코드를 작성 및 수정해 주세요. */
+import { useState } from "react";
+import "./App.css";
+import Card from "./components/Card";
+import datas from "./data/posts.json"
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [cards, setCards] = useState(datas);
+
+  const cardList = cards.map((card) => (
+    <Card 
+      id={card.id}
+      title={card.title} 
+      views={card.views} 
+      upload_date={card.upload_date}
+      bookmark={card.bookmark}
+      key={card.id}
+    />
+  ));
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="container">
+      <div className="section __order">
+        <select id="order_type">
+          <option value="1">최근등록순</option>
+          <option value="2">조회순</option>
+        </select>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <div className="section">
+        {cardList}
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
