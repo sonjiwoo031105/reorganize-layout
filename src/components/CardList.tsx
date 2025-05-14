@@ -29,12 +29,13 @@ const CardList: React.FC<Props> = ({ cards }) => {
           id="order_type"
           value={orderType}
           onChange={(e) => setOrderType(e.target.value)}
+          className="border-2 border-gray-300 p-2 rounded-md"
         >
           <option value="1">최근등록순</option>
           <option value="2">조회순</option>
         </select>
       </div>
-      <div className="section">
+      <div className="section flex flex-wrap">
         {sortedCards.map((card) => (
           <Card 
             id={card.id}
