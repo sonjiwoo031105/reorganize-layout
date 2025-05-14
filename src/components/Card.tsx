@@ -1,15 +1,7 @@
-/* 여기에 주어진 요구 사항을 충족 시키기 위한 코드를 작성 및 수정해 주세요. */
 import "./Card.css";
+import type { CardType } from "../types/card"
 
-type Card = {
-    id: string,
-    title: string,
-    views: number,
-    upload_date: string,
-    bookmark: boolean
-}
-
-function Card(props: Card) {
+function Card(props: CardType) {
   return (
     <li className="card--container" id={props.id}>
       <div className="header">
