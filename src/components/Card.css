@@ -80,3 +80,7 @@
   background: transparent;
   color: #fff;
 }
+
+.bookmark > i.fill {
+  color: red;
+}

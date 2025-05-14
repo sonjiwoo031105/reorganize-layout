@@ -1,26 +1,38 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react"
 import Card from "./Card"
-import type { CardType } from "../types/card";
+import type { CardType } from "../types/card"
+import datas from "../data/posts.json"
 
-type Props = {
-  cards: CardType[];
-};
-
-const CardList: React.FC<Props> = ({ cards }) => {
-  const [orderType, setOrderType] = useState("1");
+const CardList = () => {
+  const [cards, setCards] = useState<CardType[]>(datas)
+  const [orderType, setOrderType] = useState("1")
 
   const sortedCards = useMemo(() => {
-    const sorted = [...cards];
-    if (orderType === "1") {
-      return sorted.sort((a, b) =>
-        new Date(b.upload_date).getTime() -
-        new Date(a.upload_date).getTime()
-      );
-    } else if (orderType === "2") {
-      return sorted.sort((a, b) => b.views - a.views);
+    const bookmarked = cards.filter(card => card.bookmark)
+    const nonBookmarked = cards.filter(card => !card.bookmark)
+
+    const sortCards = (a: CardType, b: CardType) => {
+      if (orderType === "1") {
+        return new Date(b.upload_date).getTime() - new Date(a.upload_date).getTime()
+      } else if (orderType === "2") {
+        return b.views - a.views;
+      }
+      return 0
     }
-    return sorted;
-  }, [orderType, cards]);
+
+    const sortedBookmarked = bookmarked.sort(sortCards)
+    const sortedNonBookmarked = nonBookmarked.sort(sortCards)
+
+    return [...sortedBookmarked, ...sortedNonBookmarked]
+  }, [orderType, cards])
+
+  const toggleBookmark = (id: string) => {
+    setCards(prev => 
+      prev.map(card => 
+        card.id === id ? { ...card, bookmark: !card.bookmark} : card
+      )
+    )
+  }
 
   return (
     <>
@@ -38,17 +50,14 @@ const CardList: React.FC<Props> = ({ cards }) => {
       <div className="section flex flex-wrap">
         {sortedCards.map((card) => (
           <Card 
-            id={card.id}
-            title={card.title} 
-            views={card.views} 
-            upload_date={new Date(card.upload_date).toISOString().slice(0, 10)}
-            bookmark={card.bookmark}
             key={card.id}
+            card={card}
+            onToggleBookmark={() => toggleBookmark(card.id)}
           />
         ))}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default CardList;
+export default CardList
